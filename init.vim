@@ -11,27 +11,26 @@ call neobundle#begin(expand('/home/stepd/.config/nvim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
+NeoBundle 'fatih/vim-go'
 NeoBundle 'google/vim-jsonnet'
 NeoBundle 'sebdah/vim-delve'
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
+"NeoBundle 'Shougo/neosnippet.vim'
+"NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
+"NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'hashivim/vim-terraform'
-NeoBundle 'vim-syntastic/syntastic'
+NeoBundle 'vim-syntastic/syntastic' "for terraform...
 NeoBundle 'juliosueiras/vim-terraform-completion'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Xuyuanp/nerdtree-git-plugin'
-NeoBundle 'juliosueiras/vim-terraform-completion'
 "NeoBundle 'mhartington/oceanic-next'
-NeoBundle 'fatih/vim-go'
 NeoBundle 'leafgarland/typescript-vim'
-NeoBundle 'Shougo/deoplete.nvim'
-NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
-NeoBundle 'baverman/vial'
-NeoBundle 'baverman/vial-http'
+"NeoBundle 'Shougo/deoplete.nvim'
+"NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+"NeoBundle 'baverman/vial'
+"NeoBundle 'baverman/vial-http'
 
 NeoBundle 'Shougo/vimproc.vim', {
 \ 'build' : {
@@ -42,10 +41,8 @@ NeoBundle 'Shougo/vimproc.vim', {
 \     'unix' : 'gmake',
 \    },
 \ }
-NeoBundle 'Quramy/tsuquyomi'
-NeoBundle 'xuyuanp/nerdtree-git-plugin'
+NeoBundle 'Quramy/tsuquyomi' "typescript
 NeoBundle 'airblade/vim-gitgutter'
-"NeoBundle 'vim-airline/vim-airline'
 
 " Required:
 call neobundle#end()
@@ -80,18 +77,12 @@ if executable('pt')
   let g:ackprg = 'pt'
 endif
 
-"if (has("termguicolors"))
-" set termguicolors
-"endif
-
-"colorscheme molokai
-colorscheme monokai-phoenix
-"let g:airline_theme='oceanicnext'
+colorscheme industry
 
 "let g:go_highlight_operators = 1
 "let g:go_highlight_function_calls = 1
 let g:go_gocode_propose_source = 1
-let g:go_def_mode = 'godef'
+"let g:go_def_mode = 'godef'
 
 highlight ExtraWhitespace ctermbg=darkblue guibg=darkblue
 match ExtraWhitespace /\s\+$\|\t$/
