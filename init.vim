@@ -11,6 +11,10 @@ call neobundle#begin(expand('/home/stepd/.config/nvim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
+"NeoBundle 'wincent/command-t' "needs ruby
+NeoBundle 'arkwright/vim-whiplash.git' "old crappy project
+NeoBundle 'vim-airline/vim-airline'
+NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'google/vim-jsonnet'
 NeoBundle 'sebdah/vim-delve'
@@ -94,7 +98,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
 tnoremap <Esc> <C-\><C-n>
- let g:jsonnet_fmt_on_save = 1
 
 " wrap long lines in quickfix
 augroup quickfix
@@ -102,3 +105,13 @@ augroup quickfix
     autocmd FileType qf setlocal wrap
 augroup END
 
+command Jsnf %!jsonnet fmt -
+let mapleader = " "
+
+let g:WhiplashProjectsDir = "~/repos/"
+let g:WhiplashCommandName = "Repo"
+let g:WhiplashConfigDir = "~/.config/nvim/whiplash/"
+
+"set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+"let g:airline#extensions#tabline#enabled = 1
+set wildmode=longest:full,full " complete tab like bash

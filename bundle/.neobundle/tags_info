@@ -6,6 +6,8 @@ nerdtree-git-plugin
 syntastic
 tsuquyomi
 typescript-vim
+vim-airline
+vim-airline-themes
 vim-delve
 vim-fugitive
 vim-gitgutter
@@ -13,4 +15,5 @@ vim-go
 vim-jsonnet
 vim-terraform
 vim-terraform-completion
+vim-whiplash
 vimproc.vim
