@@ -1,4 +1,5 @@
 ack.vim
+ale
 ctrlp.vim
 neobundle.vim
 nerdtree
@@ -15,5 +16,5 @@ vim-go
 vim-jsonnet
 vim-terraform
 vim-terraform-completion
-vim-whiplash
 vimproc.vim
+yaml-vim

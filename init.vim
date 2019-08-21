@@ -11,8 +11,8 @@ call neobundle#begin(expand('/home/stepd/.config/nvim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
-"NeoBundle 'wincent/command-t' "needs ruby
-NeoBundle 'arkwright/vim-whiplash.git' "old crappy project
+NeoBundle 'dense-analysis/ale'
+NeoBundle 'mrk21/yaml-vim'
 NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'fatih/vim-go'
@@ -115,3 +115,32 @@ let g:WhiplashConfigDir = "~/.config/nvim/whiplash/"
 "set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 "let g:airline#extensions#tabline#enabled = 1
 set wildmode=longest:full,full " complete tab like bash
+
+let g:airline_powerline_fonts = 1
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
+"" unicode symbols
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.whitespace = 'Ξ'
+"
+"" airline symbols
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ''
+
+
