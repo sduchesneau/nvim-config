@@ -11,6 +11,9 @@ call neobundle#begin(expand('/home/stepd/.config/nvim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
+NeoBundle 'tomlion/vim-solidity'
+NeoBundle 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+NeoBundle 'bitfield/vim-gitgo'
 NeoBundle 'dense-analysis/ale'
 NeoBundle 'mrk21/yaml-vim'
 NeoBundle 'vim-airline/vim-airline'
@@ -23,10 +26,26 @@ NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'hashivim/vim-terraform'
 NeoBundle 'vim-syntastic/syntastic' "for terraform...
 NeoBundle 'juliosueiras/vim-terraform-completion'
-NeoBundle 'mileszs/ack.vim'
+" NeoBundle 'mileszs/ack.vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'Xuyuanp/nerdtree-git-plugin'
 NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'wannesm/wmgraphviz.vim'
+" NeoBundle 'SirVer/ultisnips'
+NeoBundle 'jparise/vim-graphql'
+NeoBundle 'prettier/vim-prettier', { 'do': 'yarn install' }
+NeoBundle 'nazo/pt.vim'
+
+NeoBundle 'garbas/vim-snipmate'
+NeoBundle 'honza/vim-snippets'
+NeoBundle 'tomtom/tlib_vim.git'
+NeoBundle 'MarcWeber/vim-addon-mw-utils.git'
+
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 NeoBundle 'Shougo/vimproc.vim', {
 \ 'build' : {
@@ -63,6 +82,7 @@ filetype plugin on
 
 map <C-u> :only<CR>
 map <C-n> :NERDTreeToggle<CR>
+"map <C-m> :NERDTreeFind<CR>
 map <C-l> :set invnumber<CR>
 "map <C-a> :CtrlSFToggle<CR>
 map ; :GoInfo<CR>
@@ -105,7 +125,6 @@ augroup quickfix
     autocmd FileType qf setlocal wrap
 augroup END
 
-command Jsnf %!jsonnet fmt -
 let mapleader = " "
 
 let g:WhiplashProjectsDir = "~/repos/"
@@ -144,3 +163,95 @@ let g:airline_powerline_fonts = 1
 "let g:airline_symbols.linenr = ''
 
 
+" -------------------------------------------------------------------------------------------------
+" coc.nvim default settings
+" -------------------------------------------------------------------------------------------------
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+" Better display for messages
+set cmdheight=2
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <C-TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use U to show documentation in preview window
+nnoremap <silent> U :call <SID>show_documentation()<CR>
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" disable vim-go :GoDef short cut (gd)
+" this is handled by LanguageClient [LC]
+let g:go_def_mapping_enabled = 0
+
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+
+let NERDTreeQuitOnOpen = 0
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
