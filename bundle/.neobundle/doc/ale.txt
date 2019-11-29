@@ -172,7 +172,7 @@ address to connect to instead. >
 
   call ale#linter#Define('filetype_here', {
   \   'name': 'any_name_you_want',
-  \   'lsp': 'stdio',
+  \   'lsp': 'socket',
   \   'address': 'servername:1234',
   \   'project_root': '/path/to/root_of_project',
   \})
@@ -432,7 +432,42 @@ vimrc, and your issues should go away. >
 
   set completeopt=menu,menuone,preview,noselect,noinsert
 <
+                                                                  *ale-symbols*
 
+ALE provides a set of basic completion symbols. If you want to replace those
+symbols with others, you can set the variable |g:ale_completion_symbols| with
+a mapping of the type of completion to the symbol or other string that you
+would like to use. An example here shows the available options for symbols  >
+
+  let g:ale_completion_symbols = {
+  \ 'text': '',
+  \ 'method': '',
+  \ 'function': '',
+  \ 'constructor': '',
+  \ 'field': '',
+  \ 'variable': '',
+  \ 'class': '',
+  \ 'interface': '',
+  \ 'module': '',
+  \ 'property': '',
+  \ 'unit': 'unit',
+  \ 'value': 'val',
+  \ 'enum': '',
+  \ 'keyword': 'keyword',
+  \ 'snippet': '',
+  \ 'color': 'color',
+  \ 'file': '',
+  \ 'reference': 'ref',
+  \ 'folder': '',
+  \ 'enum member': '',
+  \ 'constant': '',
+  \ 'struct': '',
+  \ 'event': 'event',
+  \ 'operator': '',
+  \ 'type_parameter': 'type param',
+  \ '<default>': 'v'
+  \ }
+<
 -------------------------------------------------------------------------------
 5.2 Go To Definition                                     *ale-go-to-definition*
 
@@ -671,6 +706,47 @@ g:ale_completion_excluded_words               *g:ale_completion_excluded_words*
   let b:ale_completion_excluded_words = ['it', 'describe']
 <
 
+g:ale_completion_symbols                             *g:ale_completion_symbols*
+
+  Type: |Dictionary|
+
+
+  A mapping from completion types to symbols for completions. See
+  |ale-symbols| for more information.
+
+  By default, this mapping only uses built in Vim completion kinds, but it can
+  be updated to use any unicode character for the completion kind. For
+  example: >
+    let g:ale_completion_symbols = {
+    \ 'text': '',
+    \ 'method': '',
+    \ 'function': '',
+    \ 'constructor': '',
+    \ 'field': '',
+    \ 'variable': '',
+    \ 'class': '',
+    \ 'interface': '',
+    \ 'module': '',
+    \ 'property': '',
+    \ 'unit': 'v',
+    \ 'value': 'v',
+    \ 'enum': 't',
+    \ 'keyword': 'v',
+    \ 'snippet': 'v',
+    \ 'color': 'v',
+    \ 'file': 'v',
+    \ 'reference': 'v',
+    \ 'folder': 'v',
+    \ 'enum_member': 'm',
+    \ 'constant': 'm',
+    \ 'struct': 't',
+    \ 'event': 'v',
+    \ 'operator': 'f',
+    \ 'type_parameter': 'p',
+    \ '<default>': 'v'
+    \ })
+<
+
 g:ale_completion_max_suggestions             *g:ale_completion_max_suggestions*
 
   Type: |Number|
@@ -799,6 +875,15 @@ g:ale_echo_msg_info_str                               *g:ale_echo_msg_info_str*
   Default: `'Info'`
 
   The string used for `%severity%` for info. See |g:ale_echo_msg_format|
+
+
+g:ale_echo_msg_log_str                                 *g:ale_echo_msg_log_str*
+
+  Type: |String|
+  Default: `'Log'`
+
+  The string used for `%severity%` for log, used only for handling LSP show
+  message requests. See |g:ale_lsp_show_message_format|
 
 
 g:ale_echo_msg_warning_str                         *g:ale_echo_msg_warning_str*
@@ -1250,6 +1335,47 @@ b:ale_loclist_msg_format                             *b:ale_loclist_msg_format*
   message used for the loclist and the quickfix list.
 
   The strings for configuring `%severity%` are also used for this option.
+
+
+g:ale_lsp_show_message_format                           *g:ale_lsp_show_message_format*
+
+  Type: |String|
+  Default: `'%severity%:%linter%: %s'`
+
+  This variable defines the format that messages received from an LSP will
+  have when echoed. The following sequences of characters will be replaced.
+
+    `%s`           - replaced with the message text
+    `%linter%`     - replaced with the name of the linter
+    `%severity%`   - replaced with the severity of the message
+
+  The strings for `%severity%` levels "error", "info" and "warning" are shared
+  with |g:ale_echo_msg_format|. Severity "log" is unique to
+  |g:ale_lsp_show_message_format| and it can be configured via
+
+    |g:ale_echo_msg_log_str|     - Defaults to `'Log'`
+
+  Please note that |g:ale_lsp_show_message_format| *can not* be configured
+  separately for each buffer like |g:ale_echo_msg_format| can.
+
+
+g:ale_lsp_show_message_severity                         *g:ale_lsp_show_message_severity*
+
+  Type: |String|
+  Default: `'error'`
+
+  This variable defines the minimum severity level an LSP message needs to be
+  displayed. Messages below this level are discarded; please note that
+  messages with `Log` severity level are always discarded.
+
+  Possible values follow the LSP spec `MessageType` definition:
+
+  `'error'`       - Displays only errors.
+  `'warning'`     - Displays errors and warnings.
+  `'information'` - Displays errors, warnings and infos
+  `'log'`         - Same as `'information'`
+  `'disabled'`    - Doesn't display any information at all.
+
 
 g:ale_lsp_root                                                 *g:ale_lsp_root*
 b:ale_lsp_root                                                 *b:ale_lsp_root*
@@ -1708,6 +1834,8 @@ g:ale_virtualtext_cursor                             *g:ale_virtualtext_cursor*
 
   Type: |Number|
   Default: `0`
+
+  This option only has any effect in NeoVim.
 
   When this option is set to `1`, a message will be shown when a cursor is
   near a warning or error. ALE will attempt to find the warning or error at a
@@ -2241,6 +2369,7 @@ documented in additional help files.
     terraform-fmt.........................|ale-hcl-terraform-fmt|
   html....................................|ale-html-options|
     fecs..................................|ale-html-fecs|
+    html-beautify.........................|ale-html-beautify|
     htmlhint..............................|ale-html-htmlhint|
     tidy..................................|ale-html-tidy|
     prettier..............................|ale-html-prettier|
@@ -2305,6 +2434,12 @@ documented in additional help files.
     mmc...................................|ale-mercury-mmc|
   nasm....................................|ale-nasm-options|
     nasm..................................|ale-nasm-nasm|
+  nim.....................................|ale-nim-options|
+    nimcheck..............................|ale-nim-nimcheck|
+    nimlsp................................|ale-nim-nimlsp|
+    nimpretty.............................|ale-nim-nimpretty|
+  nix.....................................|ale-nix-options|
+    nixpkgs-fmt...........................|ale-nix-nixpkgs-fmt|
   nroff...................................|ale-nroff-options|
     write-good............................|ale-nroff-write-good|
   objc....................................|ale-objc-options|
@@ -2360,6 +2495,7 @@ documented in additional help files.
     puppet-languageserver.................|ale-puppet-languageserver|
   purescript..............................|ale-purescript-options|
     purescript-language-server............|ale-purescript-language-server|
+    purty.................................|ale-purescript-purty|
   pyrex (cython)..........................|ale-pyrex-options|
     cython................................|ale-pyrex-cython|
   python..................................|ale-python-options|
@@ -2395,6 +2531,7 @@ documented in additional help files.
     write-good............................|ale-restructuredtext-write-good|
   ruby....................................|ale-ruby-options|
     brakeman..............................|ale-ruby-brakeman|
+    debride...............................|ale-ruby-debride|
     rails_best_practices..................|ale-ruby-rails_best_practices|
     reek..................................|ale-ruby-reek|
     rubocop...............................|ale-ruby-rubocop|
@@ -2412,6 +2549,7 @@ documented in additional help files.
     sasslint..............................|ale-sass-sasslint|
     stylelint.............................|ale-sass-stylelint|
   scala...................................|ale-scala-options|
+    metals................................|ale-scala-metals|
     sbtserver.............................|ale-scala-sbtserver|
     scalafmt..............................|ale-scala-scalafmt|
     scalastyle............................|ale-scala-scalastyle|
@@ -2463,6 +2601,7 @@ documented in additional help files.
   typescript..............................|ale-typescript-options|
     eslint................................|ale-typescript-eslint|
     prettier..............................|ale-typescript-prettier|
+    standard..............................|ale-typescript-standard|
     tslint................................|ale-typescript-tslint|
     tsserver..............................|ale-typescript-tsserver|
   vala....................................|ale-vala-options|

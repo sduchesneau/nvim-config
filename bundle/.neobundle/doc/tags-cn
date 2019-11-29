@@ -170,6 +170,7 @@ coc-action-commands	coc.cnx	/*coc-action-commands*
 coc-action-deactivateExtension	coc.cnx	/*coc-action-deactivateExtension*
 coc-action-diagnosticInfo	coc.cnx	/*coc-action-diagnosticInfo*
 coc-action-diagnosticList	coc.cnx	/*coc-action-diagnosticList*
+coc-action-diagnosticPreview	coc.cnx	/*coc-action-diagnosticPreview*
 coc-action-doCodeAction	coc.cnx	/*coc-action-doCodeAction*
 coc-action-doHover	coc.cnx	/*coc-action-doHover*
 coc-action-doQuickfix	coc.cnx	/*coc-action-doQuickfix*

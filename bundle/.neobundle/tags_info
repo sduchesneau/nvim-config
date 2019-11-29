@@ -1,4 +1,5 @@
 ale
+awesome-vim-colorschemes
 coc.nvim
 ctrlp.vim
 neobundle.vim
@@ -13,6 +14,7 @@ vim-addon-mw-utils
 vim-airline
 vim-airline-themes
 vim-delve
+vim-emacscommandline
 vim-fugitive
 vim-gitgo
 vim-gitgutter

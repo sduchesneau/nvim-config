@@ -2,6 +2,9 @@
 "suggest": {
         "autoTrigger": "trigger"
 },
+  "preferences":{
+          "formatOnSaveFiletypes": ["css", "Markdown", "json"],
+  },
   "languageserver": {
     "golang": {
       "command": "gopls",

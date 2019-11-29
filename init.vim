@@ -3,6 +3,7 @@ if has('vim_starting')
   set runtimepath+=/home/stepd/.config/nvim/bundle/neobundle.vim/
 endif
 
+noremap <Space> <Nop>
 " Required:
 call neobundle#begin(expand('/home/stepd/.config/nvim/bundle'))
 
@@ -20,6 +21,8 @@ NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'google/vim-jsonnet'
+NeoBundle 'houtsnip/vim-emacscommandline'
+"NeoBundle 'google/jsonnet'
 NeoBundle 'sebdah/vim-delve'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'ctrlpvim/ctrlp.vim'
@@ -35,6 +38,7 @@ NeoBundle 'wannesm/wmgraphviz.vim'
 NeoBundle 'jparise/vim-graphql'
 NeoBundle 'prettier/vim-prettier', { 'do': 'yarn install' }
 NeoBundle 'nazo/pt.vim'
+NeoBundle 'rafi/awesome-vim-colorschemes'
 
 NeoBundle 'garbas/vim-snipmate'
 NeoBundle 'honza/vim-snippets'
@@ -93,8 +97,7 @@ if executable('pt')
   let g:ackprg = 'pt'
 endif
 
-"colorscheme industry
-colorscheme elflord
+colorscheme tender
 
 let g:go_def_mode = 'godef'
 let g:go_highlight_operators = 1
@@ -213,6 +216,9 @@ nmap <leader>rn <Plug>(coc-rename)
 " Remap for format selected region
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+
+nnoremap <Leader>a :echo "Hey there ,"<CR>
+
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions

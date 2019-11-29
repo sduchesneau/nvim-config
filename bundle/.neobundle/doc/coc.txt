@@ -792,7 +792,8 @@ VARIABLES 					*coc-variables*
 b:coc_enabled 					*b:coc_enabled*
 
 			Set to `0` on buffer create if you don't want
-			coc.nvim manage this buffer.
+			coc.nvim send buffer events for this buffer, including
+			buffer create, change and unload.
 
 b:coc_root_patterns 				*b:coc_root_patterns*
 
@@ -1316,12 +1317,19 @@ Available Actions ~
 
 	Show diagnostic message at the current position, do not truncate.
 
+"diagnosticPreview" 				*coc-action-diagnosticPreview*
+
+	Show diagnostics under current cursor in preview window.
+
 "jumpDefinition" [{openCommand}] 		*coc-action-jumpDefinition*
 
 	jump to definition position of the current symbol.
 	Return `v:false` when location not found.
 
-	|coc-list| is used when more than one position is available.
+	|coc-list-location| is used when more than one position is available.
+
+	To always use |coc-list-location|| for locations, use `v:false` for
+	{openCommand}.
 
 	{openCommand}: optional command to open buffer, default to
 	`coc.preferences.jumpCommand` in `coc-settings.json`
@@ -1560,7 +1568,7 @@ COMMANDS 					*coc-commands*
 
 		Restart coc service.
 
-		Use this command when you want coc start all over again.
+		Use this command when you want coc to start all over again.
 
 :CocDisable 					*:CocDisable*
 
@@ -1576,7 +1584,7 @@ COMMANDS 					*coc-commands*
 
 :CocLocalConfig 				*:CocLocalConfig*
 
-		Edit or create `.vim/coc-settings.json` of current working
+		Edit or create `.vim/coc-settings.json` of the current working
 		directory.
 
 :CocInstall [{option}] {name} ... 		*:CocInstall*
@@ -1670,7 +1678,7 @@ AUTOCMD 					*coc-autocmds*
 						*CocNvimInit*
 :autocmd User CocNvimInit {command}
 
-		Triggered after the coc services has started.
+		Triggered after the coc services have started.
 
 		If you want to trigger an action of coc after vim has started, 
 		this autocmd should be used because coc is always started 
@@ -1704,13 +1712,13 @@ AUTOCMD 					*coc-autocmds*
 
 :autocmd User CocOpenFloat {command}
 
-		Triggered when floating window opened.
+		Triggered when a floating window is opened.
 						*CocTerminalOpen*
 
 :autocmd User CocTerminalOpen {command}
 
-		Triggered when terminal shown, can be used for adjust window
-		height.
+		Triggered when the terminal is shown, can be used for adjusting the
+		window height.
 
 ------------------------------------------------------------------------------
 
