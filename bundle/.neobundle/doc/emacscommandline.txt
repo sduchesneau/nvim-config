@@ -1,0 +1,325 @@
+*emacscommandline.txt*  Emacs- (or Bash-) style mappings   *emacscommandline*
+                        for command-line mode
+
+Author:  Houtsnip <NstraigOhttreedSitcPh-githuAb@yahMoo.co.uk>
+                                                *emacscommandline-author*
+Licence: Same terms as Vim itself (see |license|)
+
+CONTENTS                                        *emacscommandline-contents*
+
+ 1. Introduction                    |emacscommandline-intro|
+ 2. Movement commands               |emacscommandline-movement|
+ 3. Deletion commands               |emacscommandline-deletion|
+ 4. History commands                |emacscommandline-history|
+ 5. Other commands                  |emacscommandline-other|
+ 6. Customization                   |emacscommandline-customize|
+ 7. Old keys                        |emacscommandline-old-keys|
+ 8. Limitations                     |emacscommandline-limit|
+
+INTRODUCTION                                    *emacscommandline-intro*
+
+This plugin makes the command-line mode behave more like the Unix command
+line, by adding Emacs-style mappings (like in the Bash shell).  Some of the
+mappings just map existing vim commands, but the rest implement functionality
+that is not available natively.
+
+There is another similar plugin (vim-rsi) which covers most of the same
+mappings, but there are differences between the two plugins.  vim-rsi —
+
+ • also creates mappings in insert mode
+ • doesn’t have undo functionality
+ • doesn’t ruin the expression register (see |emacscommandline-limit|)
+ • doesn’t distinguish between |CTRL-W| and |META-Backspace|
+ • uses the in-built vim behaviour for |META-B|, |META-F|, and |META-D|
+ • doesn’t map |CTRL-K| or |CTRL-R|
+ • has a mapping for transposing two characters
+
+MOVEMENT                                        *emacscommandline-movement*
+
+*CTRL-A*         Move cursor to beginning of line
+
+*CTRL-E*         Move cursor to end of line (i.e the native vim behaviour:
+                 see |c_CTRL-E|).  Not actually a re-mapping, but noted here
+                 anyway for completeness.
+
+                 (This mapping isn’t used when the cursor is at the end of
+                  the line — although it doesn’t over-ride anything anyway.
+                  See also |g:EmacsCommandLineEndOfLineNoMapAtEnd|.)
+
+*CTRL-B*         Move cursor one character backwards
+
+*CTRL-F*         Move cursor one character forwards
+
+                 (This mapping isn’t used when the cursor is at the end of
+                  the line.  At all other times it over-rides opening the
+                  command-line window, i.e. |c_CTRL-F|.
+                  See also |g:EmacsCommandLineForwardCharNoMapAtEnd|.)
+
+*META-B*         Move cursor one word backwards
+
+*META-F*         Move cursor one word forwards
+
+DELETION                                        *emacscommandline-deletion*
+
+*CTRL-D*         Delete character under cursor
+
+                 (This mapping isn’t used when the cursor is at the end of
+                  the line.  At all other times it over-rides listing names
+                  matching the pattern in front of cursor, i.e. |c_CTRL-D|.
+                  See also |g:EmacsCommandLineDeleteCharNoMapAtEnd|.)
+
+*CTRL-K*         Kill line (delete from character under cursor to end of line)
+
+                 (This mapping isn’t used when the cursor is at the end of
+                  the line.  At all other times it over-rides inserting
+                  digraphs, i.e. |c_CTRL-K|.
+                  See also |g:EmacsCommandLineKillLineNoMapAtEnd|.)
+
+*CTRL-U*         Backwards kill line (delete backwards to beginning of line)
+                 (i.e. the same behaviour as in Bash: unix-line-discard)
+
+*META-D*         Delete word under cursor
+
+*META-Backspace* Delete word backwards
+
+                 (This is subtly different from |CTRL-W|.)
+
+*CTRL-W*         Delete backwards to previous white-space character
+                 (i.e. the same behaviour as in Bash: unix-word-rubout)
+
+                 (This is subtly different from |META-Backspace|.)
+
+HISTORY                                         *emacscommandline-history*
+
+*CTRL-P*         Previous line in history (same as |c_<Up>|)
+
+*CTRL-N*         Next line in history (same as |c_<Down>|)
+
+*META-<*         First line in history
+
+*META->*         Last line in history
+
+*CTRL-R*         Search history backwards
+
+                 (This mapping is only used when the command line is empty —
+                  in which case it over-rides inserting registers,
+                  i.e. |c_CTRL-R|.  See also
+                  |g:EmacsCommandLineSearchCommandLineMapOnlyWhenEmpty|.)
+
+OTHER                                           *emacscommandline-other*
+
+*CTRL-T*         Transpose character under cursor with previous character
+
+*CTRL-Y*         Paste (yank) last deleted text (over-rides |c_CTRL-Y|).
+
+                 (Note that in Emacs, ‘yank’ means ‘paste’, whereas in vim it
+                 means ‘copy’.  The same text is also available in the
+                 registry ‘c’.)
+
+*CTRL-_*         Undo last change (over-rides |c_CTRL-_|)
+*CTRL-X_CTRL-U*   "    "    "
+
+                 (See also |g:EmacsCommandLineMaxUndoHistory|)
+
+*CTRL-G*         Abort command and go back to normal mode (same as |c_CTRL-C|)
+
+*CTRL-Z*         Toggle command-line as external command (over-rides suspend
+                 vim in the terminal)
+
+CUSTOMIZATION                                   *emacscommandline-customize*
+
+A number of options may be set in your |.vimrc| to influence the behaviour of
+the plug-in. To set an option, you include a line like this in your |.vimrc|:
+
+    let g:EmacsCommandLineSearchCommandLineDisable = 1
+
+All available options:
+
+                             *g:EmacsCommandLineMaxUndoHistory*
+                              number (default 100)
+  |g:EmacsCommandLineMaxUndoHistory|
+
+      The maximum number of undo states that will be remembered (accessible
+      by the undo command (|CTRL-_|).  (See |emacscommandline-other|)
+
+                             *g:EmacsCommandLineOldMapPrefix*
+                              string (default '<C-O>')
+  |g:EmacsCommandLineOldMapPrefix|
+
+      The prefix to use to access the old functionality (if clobbered by the
+      mappings made by this plugin).  (See |emacscommandline-old-keys|)
+
+                             *g:EmacsCommandLine[Command]Disable*
+                              number (default 0)
+  *g:EmacsCommandLineBeginningOfLineDisable*
+  *g:EmacsCommandLineEndOfLineDisable*
+  *g:EmacsCommandLineBackwardCharDisable*
+  *g:EmacsCommandLineForwardCharDisable*
+  *g:EmacsCommandLineBackwardWordDisable*
+  *g:EmacsCommandLineForwardWordDisable*
+  *g:EmacsCommandLineDeleteCharDisable*
+  *g:EmacsCommandLineBackwardDeleteCharDisable*
+  *g:EmacsCommandLineKillLineDisable*
+  *g:EmacsCommandLineBackwardKillLineDisable*
+  *g:EmacsCommandLineKillWordDisable*
+  *g:EmacsCommandLineBackwardKillWordDisable*
+  *g:EmacsCommandLineDeleteBackwardsToWhiteSpaceDisable*
+  *g:EmacsCommandLineOlderMatchingCommandLineDisable*
+  *g:EmacsCommandLineNewerMatchingCommandLineDisable*
+  *g:EmacsCommandLineFirstLineInHistoryDisable*
+  *g:EmacsCommandLineLastLineInHistoryDisable*
+  *g:EmacsCommandLineSearchCommandLineDisable*
+  *g:EmacsCommandLineTransposeCharDisable*
+  *g:EmacsCommandLineYankDisable*
+  *g:EmacsCommandLineUndoDisable*
+  *g:EmacsCommandLineAbortCommandDisable*
+  *g:EmacsCommandLineToggleExternalCommandDisable*
+
+      These options all have the format g:EmacsCommandLine[Command]Disable,
+      where “[Command]” refers to a specific mapping.
+
+      If any option is defined and set to 1, the relevant mapping will not
+      be made.
+
+      E.g. —
+        let g:EmacsCommandLineToggleExternalCommandDisable = 1
+
+                             *g:EmacsCommandLine[Command]Map*
+                              string or list of strings
+                              (defaults to mappings as above)
+  *g:EmacsCommandLineBeginningOfLineMap*
+  *g:EmacsCommandLineEndOfLineMap*
+  *g:EmacsCommandLineBackwardCharMap*
+  *g:EmacsCommandLineForwardCharMap*
+  *g:EmacsCommandLineBackwardWordMap*
+  *g:EmacsCommandLineForwardWordMap*
+  *g:EmacsCommandLineDeleteCharMap*
+  *g:EmacsCommandLineBackwardDeleteCharMap*
+  *g:EmacsCommandLineKillLineMap*
+  *g:EmacsCommandLineBackwardKillLineMap*
+  *g:EmacsCommandLineKillWordMap*
+  *g:EmacsCommandLineBackwardKillWordMap*
+  *g:EmacsCommandLineDeleteBackwardsToWhiteSpaceMap*
+  *g:EmacsCommandLineOlderMatchingCommandLineMap*
+  *g:EmacsCommandLineNewerMatchingCommandLineMap*
+  *g:EmacsCommandLineFirstLineInHistoryMap*
+  *g:EmacsCommandLineLastLineInHistoryMap*
+  *g:EmacsCommandLineSearchCommandLineMap*
+  *g:EmacsCommandLineTransposeCharMap*
+  *g:EmacsCommandLineYankMap*
+  *g:EmacsCommandLineUndoMap*
+  *g:EmacsCommandLineAbortCommandMap*
+  *g:EmacsCommandLineToggleExternalCommandMap*
+
+      These options all have the format g:EmacsCommandLine[Command]Map,
+      where “[Command]” refers to a specific mapping.
+
+      The option, if defined, will set the mapping used, instead of the
+      relevant mapping as listed above.
+
+      You can also set the option to a list of strings, in order to define
+      more than one mapping for the same command.
+
+      E.g. —
+        let g:EmacsCommandLineSearchCommandLineMap = '<M-r>'
+        let g:EmacsCommandLineBeginningOfLineMap   = ['<C-B>', '<C-A>']
+
+                             *g:EmacsCommandLine[Command]MapOnlyWhenEmpty*
+                              number (default varies)
+  *g:EmacsCommandLineBeginningOfLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineEndOfLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineBackwardCharMapOnlyWhenEmpty*
+  *g:EmacsCommandLineForwardCharMapOnlyWhenEmpty*
+  *g:EmacsCommandLineBackwardWordMapOnlyWhenEmpty*
+  *g:EmacsCommandLineForwardWordMapOnlyWhenEmpty*
+  *g:EmacsCommandLineDeleteCharMapOnlyWhenEmpty*
+  *g:EmacsCommandLineBackwardDeleteCharMapOnlyWhenEmpty*
+  *g:EmacsCommandLineKillLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineBackwardKillLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineKillWordMapOnlyWhenEmpty*
+  *g:EmacsCommandLineBackwardKillWordMapOnlyWhenEmpty*
+  *g:EmacsCommandLineDeleteBackwardsToWhiteSpaceMapOnlyWhenEmpty*
+  *g:EmacsCommandLineOlderMatchingCommandLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineNewerMatchingCommandLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineFirstLineInHistoryMapOnlyWhenEmpty*
+  *g:EmacsCommandLineLastLineInHistoryMapOnlyWhenEmpty*
+  *g:EmacsCommandLineSearchCommandLineMapOnlyWhenEmpty*
+  *g:EmacsCommandLineTransposeCharMapOnlyWhenEmpty*
+  *g:EmacsCommandLineYankMapOnlyWhenEmpty*
+  *g:EmacsCommandLineUndoMapOnlyWhenEmpty*
+  *g:EmacsCommandLineAbortCommandMapOnlyWhenEmpty*
+  *g:EmacsCommandLineToggleExternalCommandMapOnlyWhenEmpty*
+
+      These options all have the format
+      g:EmacsCommandLine[Command]MapOnlyWhenEmpty, where “[Command]” refers to
+      a specific mapping.
+
+      If any option is defined and set to 1, the relevant mapping will only be
+      used when the command line is empty.  Otherwise, the native vim
+      functionality will be used.
+
+      By default, the following mappings are set to 1:
+
+        |g:EmacsCommandLineSearchCommandLineMapOnlyWhenEmpty|
+
+      All others default to 0.
+
+                             *g:EmacsCommandLine[Command]NoMapAtEnd*
+                              number (default varies)
+  *g:EmacsCommandLineBeginningOfLineNoMapAtEnd*
+  *g:EmacsCommandLineEndOfLineNoMapAtEnd*
+  *g:EmacsCommandLineBackwardCharNoMapAtEnd*
+  *g:EmacsCommandLineForwardCharNoMapAtEnd*
+  *g:EmacsCommandLineBackwardWordNoMapAtEnd*
+  *g:EmacsCommandLineForwardWordNoMapAtEnd*
+  *g:EmacsCommandLineDeleteCharNoMapAtEnd*
+  *g:EmacsCommandLineBackwardDeleteCharNoMapAtEnd*
+  *g:EmacsCommandLineKillLineNoMapAtEnd*
+  *g:EmacsCommandLineBackwardKillLineNoMapAtEnd*
+  *g:EmacsCommandLineKillWordNoMapAtEnd*
+  *g:EmacsCommandLineBackwardKillWordNoMapAtEnd*
+  *g:EmacsCommandLineDeleteBackwardsToWhiteSpaceNoMapAtEnd*
+  *g:EmacsCommandLineOlderMatchingCommandLineNoMapAtEnd*
+  *g:EmacsCommandLineNewerMatchingCommandLineNoMapAtEnd*
+  *g:EmacsCommandLineFirstLineInHistoryNoMapAtEnd*
+  *g:EmacsCommandLineLastLineInHistoryNoMapAtEnd*
+  *g:EmacsCommandLineSearchCommandLineNoMapAtEnd*
+  *g:EmacsCommandLineTransposeCharNoMapAtEnd*
+  *g:EmacsCommandLineYankNoMapAtEnd*
+  *g:EmacsCommandLineUndoNoMapAtEnd*
+  *g:EmacsCommandLineAbortCommandNoMapAtEnd*
+  *g:EmacsCommandLineToggleExternalCommandNoMapAtEnd*
+
+      These options all have the format g:EmacsCommandLine[Command]NoMapAtEnd,
+      where “[Command]” refers to a specific mapping.
+
+      If any option is defined and set to 1, the relevant mapping will only be
+      used when the cursor is not at the end of the command line.  At the end
+      of the command line, the native vim functionality will be used.
+
+      By default, the following mappings are set to 1:
+
+        |g:EmacsCommandLineForwardCharNoMapAtEnd|
+        |g:EmacsCommandLineEndOfLineNoMapAtEnd|
+        |g:EmacsCommandLineDeleteCharNoMapAtEnd|
+        |g:EmacsCommandLineKillLineNoMapAtEnd|
+
+      All others default to 0.
+
+OLD KEYS                                        *emacscommandline-old-keys*
+
+The old functions are all mapped to the same combination prefixed by CTRL-O.
+So for example, to open the command-line window (see |c_CTRL-F|), press
+instead CTRL-O_CTRL-F.
+
+This can be customized using the option|g:EmacsCommandLineOldMapPrefix| (which
+defaults to '<C-O>').
+
+LIMITATIONS                                     *emacscommandline-limit*
+
+This plugin buggers up the expression register (i.e. |c_CTRL-R_=|).  This is
+a limitation of vim.  I don't know how to switch these mappings off in the
+expression register and I don't think it's possible. However I never use the
+expression register except in mappings, so it doesn't affect me!
+
+ vim:tw=78:et:ft=help:norl:
